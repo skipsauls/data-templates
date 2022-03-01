@@ -1,0 +1,73 @@
+{
+  "templateType" : "app",
+  "label" : "Data App Demos",
+  "name" : "Data_App_Demos",
+  "namespace" : "eadx",
+  "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "assetVersion" : 54.0,
+  "variableDefinition" : "variables.json",
+  "uiDefinition" : "ui.json",
+  "rules" : [
+    {
+      "type" : "templateToApp",
+      "file" : "template-to-app-rules.json"
+    },
+    {
+      "type" : "appToTemplate",
+      "file" : "app-to-template-rules.json"
+    }
+  ],
+  "releaseInfo" : {
+    "templateVersion" : "1.3",
+    "notesFile" : "releaseNotes.html"
+  },
+  "folderDefinition" : "folder.json",
+  "externalFiles" : [ ],
+  "lenses" : [ ],
+  "dashboards" : [ ],
+  "components" : [ ],
+  "eltDataflows" : [ ],
+  "recipes" : [
+    {
+      "label" : "Data App - Sentiment Analysis",
+      "name" : "Data_App_Sentiment_Analysis",
+      "condition" : "${Variables.Overrides.createAllRecipes}",
+      "file" : "recipes/Data_App_Sentiment_Analysis.json"
+    }
+  ],
+  "datasetFiles" : [
+    {
+      "label" : "Sentiment Analysis",
+      "name" : "Sentiment_Analysis_tp",
+      "condition" : "${Variables.Overrides.createAllDatasetFiles}",
+      "userXmd" : "dataset_files/Sentiment_Analysis_tp_XMD.json"
+    }
+  ],
+  "storedQueries" : [ ],
+  "imageFiles" : [ ],
+  "extendedTypes" : { },
+  "templateDependencies" : [ ],
+  "tags" : [
+    "Data App"
+  ],
+  "icons" : {
+    "appBadge" : {
+      "name" : "16.png"
+    },
+    "templateBadge" : {
+      "name" : "df17_icon"
+    },
+    "templatePreviews" : [
+      {
+        "name" : "df17_icon",
+        "label" : "One",
+        "description" : "This is the first preview image"
+      },
+      {
+        "name" : "df17_icon",
+        "label" : "Two",
+        "description" : "This is the second preview image"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "pages" : [
+    {
+      "title": "Sentiment Analysis Customization",
+      "variables": [
+        {
+          "name": "Sentiment_Analysis_Add_dataset_sourceObject"
+        },
+        {
+          "name": "Sentiment_Analysis_Add_dataset_sourceObjectFields"
+        }
+      ]	  
+    }      
+  ],
+  "displayMessages" : [ ]
+}

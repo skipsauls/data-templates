@@ -1,0 +1,120 @@
+{
+  "Overrides" : {
+    "label" : "Overrides",
+    "description" : "Internal configuration to allow asset creation overrides, not to be displayed in UI.",
+    "defaultValue" : {
+      "createAllDashboards" : true,
+      "createAllComponents" : true,
+      "createAllLenses" : true,
+      "createAllExternalFiles" : true,
+      "createDataflow" : true,
+      "createAllDatasetFiles" : true,
+      "createAllImages" : true,
+      "createAllRecipes" : true
+    },
+    "required" : true,
+    "excludeSelected" : false,
+    "excludes" : [ ],
+    "variableType" : {
+      "required" : [
+        "createAllExternalFiles",
+        "createAllDashboards",
+        "createAllComponents",
+        "createAllImages",
+        "createAllDatasetFiles",
+        "createAllLenses",
+        "createDataflow",
+        "createAllRecipes"
+      ],
+      "type" : "ObjectType",
+      "properties" : {
+        "createAllDashboards" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllComponents" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllLenses" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllExternalFiles" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createDataflow" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllDatasetFiles" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllImages" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        },
+        "createAllRecipes" : {
+          "type" : "BooleanType",
+          "enums" : [
+            true,
+            false
+          ]
+        }
+      },
+      "strictValidation" : true
+    }
+  },
+  "Sentiment_Analysis_Add_dataset_sourceObject": {
+    "label": "Source Object Name",
+    "description": "The source object to use for sentiment analysis",
+    "defaultValue": {
+      "sobjectName": "Opportunity"
+    },
+    "variableType": {
+      "type": "SobjectType"
+    }
+  },
+  "Sentiment_Analysis_Add_dataset_sourceObjectFields": {
+    "label": "Source Object Fields",
+    "description": "The source object fields to use for sentiment analysis",
+    "variableType": {
+      "type": "ArrayType",
+      "itemsType": {
+        "type": "SobjectFieldType",
+        "dataType": "xsd:string"
+      },
+      "sizeLimit": {
+        "min": 1,
+        "max": 10
+      }
+    },
+    "defaultValue": [{
+      "fieldName": "Description",
+      "sobjectName": "{{Variables.Sentiment_Analysis_Add_dataset_sourceObject.sobjectName}}"
+    }]  
+  }
+}
