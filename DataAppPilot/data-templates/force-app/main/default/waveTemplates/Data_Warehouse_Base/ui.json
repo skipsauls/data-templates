@@ -1,0 +1,21 @@
+{
+  "pages" : [
+    {
+      "title": "Data Warehouse",
+      "variables": [
+        {
+          "name": "Data_Warehouse_dataset_sourceObject"
+        },
+        {
+          "name": "Data_Warehouse_dataset_sourceObjectFields"
+        }
+      ]	  
+    }
+  ],
+  "displayMessages" : [
+    { 
+      "text":"When we're done creating the app, we'll send you an email.",
+      "location": "AppLandingPage"
+    }    
+  ]
+}

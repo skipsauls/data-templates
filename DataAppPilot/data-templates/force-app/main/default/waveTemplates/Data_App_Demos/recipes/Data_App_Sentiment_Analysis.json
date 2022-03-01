@@ -1,0 +1,29 @@
+{
+  "name" : "Data_App_Sentiment_Analysis",
+  "label" : "Data App - Sentiment Analysis",
+  "scheduleExpression" : null,
+  "publishingTarget" : "DATASET",
+  "format" : "R3",
+  "scheduleType" : null,
+  "recipeDefinition" : {
+    "version" : "54.0",
+    "nodes" : {
+    },
+    "ui" : {
+      "nodes" : {
+      },
+      "connectors" : [
+        {
+          "source" : "LOAD_DATASET0",
+          "target" : "TRANSFORM0"
+        },
+        {
+          "source" : "TRANSFORM0",
+          "target" : "OUTPUT0"
+        }
+      ],
+      "hiddenColumns" : [ ]
+    }
+  },
+  "status" : "Success"
+}

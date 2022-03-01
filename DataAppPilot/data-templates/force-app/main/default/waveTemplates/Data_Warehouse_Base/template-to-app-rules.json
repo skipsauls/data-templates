@@ -1,0 +1,306 @@
+{
+  "constants" : [
+    {
+      "name": "nullval",
+      "value": null
+    }
+  ],
+  "macros" : [
+    {
+      "namespace": "myMacros",
+      "definitions": [
+
+        {
+          "name": "insertLoadDatasetUINode",
+          "parameters": [
+            "label",
+            "description"
+          ],
+          "returns": {
+            "label" : "${p.label}",
+            "description" : "${p.description}",            
+            "type" : "LOAD_DATASET",
+            "top" : 112,
+            "left" : 112,
+            "parameters" : {
+              "sampleSize" : 2000
+            }
+          }
+        },
+
+        {
+          "name": "insertOutputUINode",
+          "parameters": [
+            "label",
+            "description"
+          ],
+          "returns": {
+            "label" : "${p.label}",
+            "description" : "${p.description}",
+            "type" : "OUTPUT",
+            "top" : 112,
+            "left" : 392
+          }
+        },        
+
+        {
+          "name": "insertTransformUINode",
+          "parameters": [
+            "label",
+            "description"
+          ],
+          "returns": {
+            "label" : "${p.label}",
+            "description" : "${p.description}",
+            "type" : "TRANSFORM",
+            "top" : 112,
+            "left" : 252,
+            "graph": {},
+            "connectors": []
+          }
+        },        
+       
+        {
+          "name": "insertTransformGraphUINode",
+          "parameters": [
+            "type"
+          ],
+          "returns": {
+            "parameters": {
+              "type" : "${p.type}"
+            }
+          }
+        },        
+
+        {
+          "name": "insertNullGraphUINode",
+          "parameters": [],
+          "returns": "${Constants.nullval}" 
+        },        
+
+
+        {
+          "name": "insertTransformConnectorsUINode",
+          "parameters": [
+            "source",
+            "target"
+          ],
+          "returns": {
+            "source" : "${p.source}",
+            "target" : "${p.target}"
+          }
+        },        
+
+        {
+          "name": "insertLoadDatasetNode",
+          "parameters": [
+            "sourceObject",
+            "sources"
+          ],          
+          "returns": {
+            "action" : "load",
+            "sources" : [],
+            "parameters" : {
+              "fields" : ["Description"],
+              "dataset" : {
+                "type" : "connectedDataset",
+                "connectionName" : "SFDC_LOCAL",
+                "label" : "${p.sourceObject.sobjectLabel}",
+                "sourceObjectName" : "${p.sourceObject.sobjectName}"
+              }
+            }            
+          }
+        },
+        {
+          "name": "insertDetectSentimentNode",
+          "parameters": [
+            "sourceField",
+            "sources"
+          ],
+          "returns": {
+              "action": "detectSentiment",
+              "parameters": {
+                  "outputType": "MEASURE",
+                  "sentimentScore": "NONE",
+                  "sourceField": "${p.sourceField}",
+                  "targetField": {
+                      "label": "${p.sourceField} Sentiment Value",
+                      "name": "${p.sourceField}_sentiment"
+                  },
+                  "targetSentimentScoreFields": {}
+              },
+              "sources": "${p.sources}"
+          }
+        },
+        {
+          "name": "insertSentimentFormulaNode",
+          "parameters": [
+            "sourceField",
+            "sources"
+          ],
+          "returns": {
+              "action": "formula",
+              "parameters": {
+                  "expressionType": "SQL",
+                  "fields": [
+                      {
+                          "defaultValue": "",
+                          "formulaExpression": "case\n     when ${p.sourceField}_sentiment >= 1.00 and ${p.sourceField}_sentiment < 2.50  then 'Negative'\n     when ${p.sourceField}_sentiment >= 2.50 and ${p.sourceField}_sentiment < 3.50  then 'Neutral'\n     when ${p.sourceField}_sentiment >= 3.50 and ${p.sourceField}_sentiment <= 5.00  then 'Positive'\nend",
+                          "label": "${p.sourceField} Sentiment Name",
+                          "name": "${p.sourceField}_sentiment_name",
+                          "precision": 255,
+                          "type": "TEXT"
+                      }
+                  ]
+              },
+              "sources": "${p.sources}"
+          }
+        },
+        {
+          "name": "insertSentimentOutputNode",
+          "parameters": [
+            "sources"
+          ],
+          "returns": {
+                "action": "save",
+                "parameters": {
+                    "dataset": {
+                        "folderName": "${App.Folder.FullyQualifiedName}",
+                        "label": "Sentiment Analysis",
+                        "name": "${App.Datasets.Data_Warehouse_tp.FullyQualifiedName}",
+                        "type": "analyticsDataset"
+                    },
+                    "fields": []
+                },
+                "sources": "${p.sources}"
+            }
+        },
+
+        {
+          "name": "insertSentimentNodes",
+          "parameters": [
+            "index"
+          ],
+          "actions":[
+					  {
+						  "action": "eval",
+						  "key": "SourceObjectField",
+						  "value": "${Variables.Data_Warehouse_dataset_sourceObjectFields[p.index]}"
+				    },            
+					  {
+						  "action": "eval",
+						  "key": "Index",
+						  "value": "${p.index}"
+				    },            
+					  {
+						  "action": "eval",
+						  "key": "PreviousIndex",
+						  "value": "${p.index > 0 ? p.index - 1 : 0}"
+				    },
+            {
+              "action": "eval",
+              "key": "DetectSentimentSources",
+              "value": "[\"${p.index > 0 ? 'FORMULA'.concat(Rules.Eval.PreviousIndex) : 'LOAD_DATASET0'}\"]"
+            },
+            {
+              "action": "eval",
+              "key": "SentimentFormulaSources",
+              "value": "[\"${'DETECT_SENTIMENT'.concat(Rules.Eval.Index)}\"]"
+            },
+            {
+              "action": "put",
+              "path": "$.recipeDefinition.nodes",
+              "key": "${'DETECT_SENTIMENT'.concat(p.index)}",
+              "value": "${myMacros:insertDetectSentimentNode(Rules.Eval.SourceObjectField.fieldName, Rules.Eval.DetectSentimentSources)}"
+            },
+
+            {
+              "action": "put",
+              "description": "Adds a null UI graph node.",
+              "path": "$.recipeDefinition.ui.nodes.TRANSFORM0.graph",
+              "key": "${'DETECT_SENTIMENT'.concat(p.index)}",
+              "value": "${myMacros:insertNullGraphUINode()}"
+            },            
+            
+            {
+              "action": "put",
+              "path": "$.recipeDefinition.nodes",
+              "key": "${'FORMULA'.concat(p.index)}",
+              "value": "${myMacros:insertSentimentFormulaNode(Rules.Eval.SourceObjectField.fieldName, Rules.Eval.SentimentFormulaSources)}"
+            },
+
+            {
+              "action": "put",
+              "description": "Adds a formula UI graph node.",
+              "path": "$.recipeDefinition.ui.nodes.TRANSFORM0.graph",
+              "key": "${'FORMULA'.concat(p.index)}",
+              "value": "${myMacros:insertTransformGraphUINode('BASE_FORMULA_UI')}"
+            },
+
+            {
+              "action": "eval",
+              "key": "ConnectorSourceA",
+              "value": "${'FORMULA'.concat(Rules.Eval.PreviousIndex)}"
+            },
+            {
+              "action": "eval",
+              "key": "ConnectorTargetA",
+              "value": "${'DETECT_SENTIMENT'.concat(Rules.Eval.Index)}"
+            },
+
+            {
+              "action": "eval",
+              "key": "ConnectorSourceB",
+              "value": "${'DETECT_SENTIMENT'.concat(Rules.Eval.Index)}"
+            },
+            {
+              "action": "eval",
+              "key": "ConnectorTargetB",
+              "value": "${'FORMULA'.concat(Rules.Eval.Index)}"
+            },
+            
+            {
+              "action": "add",
+              "condition": "${p.index != 0}",
+              "description": "Adds a UI graph node connector, only if index is non-zero.",
+              "path": "$.recipeDefinition.ui.nodes.TRANSFORM0.connectors",
+              "value": "${myMacros:insertTransformConnectorsUINode(Rules.Eval.ConnectorSourceA, Rules.Eval.ConnectorTargetA)}"
+            },
+
+            {
+              "action": "add",
+              "description": "Adds a UI graph node connector.",
+              "path": "$.recipeDefinition.ui.nodes.TRANSFORM0.connectors",
+              "value": "${myMacros:insertTransformConnectorsUINode(Rules.Eval.ConnectorSourceB, Rules.Eval.ConnectorTargetB)}"
+            }        
+
+
+          ]
+        }
+
+      ]
+    }    
+  ],
+  "rules" : [
+
+    {
+      "name": "Customize_Data_Warehouse_Recipe",
+      "appliesTo": [
+        {
+          "type": "recipe",
+          "name": "Data_Warehouse"
+        }
+      ],
+      "actions": [
+
+        {
+          "action": "set",
+          "description": "Adds the fields for the load dataset node.",
+          "path": "$.recipeDefinition.nodes.LOAD_DATASET0.parameters.fields",
+          "value": "${array:forEach(Variables.Data_Warehouse_dataset_sourceObjectFields,'${var.fieldName}')}"
+        }
+        
+      ]    
+    }
+  ]
+}

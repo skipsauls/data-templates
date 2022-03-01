@@ -1,0 +1,105 @@
+{
+  "name": "Data_Warehouse",
+  "label": "Data Warehouse - Base",
+  "scheduleExpression": null,
+  "publishingTarget": "DATASET",
+  "format": "R3",
+  "scheduleType": null,
+  "licenseAttributes" : {
+    "type" : "sonic"
+  },  
+  "recipeDefinition" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "action" : "load",
+        "parameters" : {
+          "dataset" : {
+            "connectionName" : "SFDC_LOCAL",
+            "label" : "Opportunity",
+            "sourceObjectName" : "Opportunity",
+            "type" : "connectedDataset"
+          },
+          "fields" : [ "Id", "Name", "StageName", "Amount", "Probability", "CloseDate", "Type" ]
+        },
+        "sources" : [ ]
+      },
+      "FILTER0" : {
+        "action" : "filter",
+        "parameters" : {
+          "filterExpressions" : [ {
+            "field" : "Name",
+            "operands" : [ "Acme" ],
+            "operator" : "CONTAINS",
+            "type" : "TEXT"
+          } ]
+        },
+        "sources" : [ "LOAD_DATASET0" ]
+      },
+      "OUTPUT0" : {
+        "action" : "outputExternal",
+        "parameters" : {
+          "connectionName" : "snowflake_output",
+          "externalIdFieldName" : "",
+          "fieldsMapping" : [ {
+            "sourceField" : "Id",
+            "targetField" : "ID"
+          }, {
+            "sourceField" : "StageName",
+            "targetField" : "STAGENAME"
+          }, {
+            "sourceField" : "Amount",
+            "targetField" : "AMOUNT"
+          }, {
+            "sourceField" : "Probability",
+            "targetField" : "PROBABILITY"
+          }, {
+            "sourceField" : "CloseDate",
+            "targetField" : "CLOSEDATE"
+          }, {
+            "sourceField" : "Type",
+            "targetField" : "TYPE"
+          } ],
+          "hyperFileName" : "",
+          "object" : "OPPORTUNITY",
+          "operation" : ""
+        },
+        "sources" : [ "FILTER0" ]
+      }
+    },
+    "ui" : {
+      "nodes" : {
+        "LOAD_DATASET0" : {
+          "label" : "Opportunity",
+          "type" : "LOAD_DATASET",
+          "top" : 112,
+          "left" : 112,
+          "parameters" : {
+            "sampleSize" : 2000
+          }
+        },
+        "FILTER0" : {
+          "label" : "Filter 0",
+          "type" : "FILTER",
+          "top" : 112,
+          "left" : 252
+        },
+        "OUTPUT0" : {
+          "label" : "Output 0",
+          "type" : "OUTPUT",
+          "top" : 112,
+          "left" : 392
+        }
+      },
+      "connectors" : [ {
+        "source" : "LOAD_DATASET0",
+        "target" : "FILTER0"
+      }, {
+        "source" : "FILTER0",
+        "target" : "OUTPUT0"
+      } ],
+      "hiddenColumns" : [ ]
+    },
+    "version" : "54.0"
+  },
+  "status": "Success"
+}

@@ -1,0 +1,33 @@
+{
+  "pages" : [
+    {
+      "title": "Sentiment Analysis",
+      "variables": [
+        {
+          "name": "Sentiment_Analysis_dataset_sourceObject"
+        },
+        {
+          "name": "Sentiment_Analysis_dataset_sourceObjectFields"
+        },
+        {
+          "name": "Sentiment_Analysis_dataset_selectAdditionalFields"
+        }
+      ]	  
+    },
+    {
+      "title": "Sentiment Analysis (Base) Customization",
+      "condition":"{{Variables.Sentiment_Analysis_dataset_selectAdditionalFields == true}}",
+      "variables": [
+        {
+          "name": "Sentiment_Analysis_dataset_sourceObjectAdditionalFields"
+        }
+      ]	  
+    }
+  ],
+  "displayMessages" : [
+    { 
+      "text":"BORK! When we're done creating the app, we'll send you an email.",
+      "location": "AppLandingPage"
+    }    
+  ]
+}

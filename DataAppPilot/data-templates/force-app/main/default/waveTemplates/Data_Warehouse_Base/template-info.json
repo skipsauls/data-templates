@@ -1,0 +1,67 @@
+{
+  "templateType" : "app",
+  "label" : "Data Warehouse",
+  "name" : "Data_Warehouse_Base",
+  "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "assetVersion" : 54.0,
+  "variableDefinition" : "variables.json",
+  "uiDefinition" : "ui.json",
+  "rules" : [
+    {
+      "type" : "templateToApp",
+      "file" : "template-to-app-rules.json"
+    },
+    {
+      "type" : "appToTemplate",
+      "file" : "app-to-template-rules.json"
+    }
+  ],
+  "releaseInfo" : {
+    "templateVersion" : "1.3",
+    "notesFile" : "releaseNotes.html"
+  },
+  "folderDefinition" : "folder.json",
+  "externalFiles" : [ ],
+  "lenses" : [ ],
+  "dashboards" : [ ],
+  "components" : [ ],
+  "eltDataflows" : [ ],
+  "recipes" : [
+    {
+      "label" : "Data Warehouse (Base)",
+      "name" : "Data_Warehouse",
+      "condition" : "${Variables.Overrides.createAllRecipes}",
+      "file" : "recipes/Data_Warehouse.json"
+    }
+  ],
+  "datasetFiles" : [
+
+  ],
+  "storedQueries" : [ ],
+  "imageFiles" : [ ],
+  "extendedTypes" : { },
+  "templateDependencies" : [ ],
+  "tags" : [
+    "Data App"
+  ],
+  "icons" : {
+    "appBadge" : {
+      "name" : "16.png"
+    },
+    "templateBadge" : {
+      "name" : "data_apps_illustration2_1920x1080"
+    },
+    "templatePreviews" : [
+      {
+        "name" : "data_apps_illustration2_1920x1080",
+        "label" : "One",
+        "description" : "This is the first preview image"
+      },
+      {
+        "name" : "data_apps_illustration2_1920x1080",
+        "label" : "Two",
+        "description" : "This is the second preview image"
+      }
+    ]
+  }
+}
