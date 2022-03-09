@@ -5,9 +5,6 @@
   "publishingTarget": "DATASET",
   "format": "R3",
   "scheduleType": null,
-  "licenseAttributes" : {
-    "type" : "sonic"
-  },  
   "recipeDefinition" : {
     "nodes" : {
       "LOAD_DATASET0" : {

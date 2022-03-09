@@ -34,9 +34,7 @@
       "file" : "recipes/Data_Warehouse.json"
     }
   ],
-  "datasetFiles" : [
-
-  ],
+  "datasetFiles" : [ ],
   "storedQueries" : [ ],
   "imageFiles" : [ ],
   "extendedTypes" : { },
